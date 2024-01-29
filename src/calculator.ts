@@ -1,14 +1,46 @@
 const displayInput = document.getElementById("display") as HTMLInputElement;
+let sum: number = 0;
 function inputNumber(num: string) {
   if (displayInput) {
     displayInput.value = num;
   }
 }
 
+function inputOperator(operator: string) {
+  if (displayInput) {
+    sum = sum + Number(displayInput.value);
+    displayInput.value = operator;
+  }
+}
 const sevenButton = document.getElementById("sevenButton") as HTMLButtonElement;
 
 if (sevenButton) {
   sevenButton.addEventListener("click", () => inputNumber("7"));
+}
+
+const plusButton = document.getElementById("plusButton") as HTMLButtonElement;
+
+if (plusButton) {
+  plusButton.addEventListener("click", () => {
+    inputOperator("+");
+  });
+}
+
+const resultButton = document.getElementById(
+  "resultButton"
+) as HTMLButtonElement;
+
+function calculateResult() {
+  if (displayInput) {
+    sum = sum + Number(displayInput.value);
+    displayInput.value = sum.toString();
+  }
+}
+
+if (resultButton) {
+  resultButton.addEventListener("click", () => {
+    calculateResult();
+  });
 }
 
 /**
