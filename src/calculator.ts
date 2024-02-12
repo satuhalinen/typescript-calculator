@@ -1,8 +1,15 @@
 const displayInput = document.getElementById("display") as HTMLInputElement;
 let sum: number = 0;
+let operatorClicked: boolean = false;
+
 function inputNumber(num: string) {
   if (displayInput) {
-    displayInput.value = num;
+    if (operatorClicked) {
+      displayInput.value = num;
+      operatorClicked = false;
+    } else {
+      displayInput.value += num;
+    }
   }
 }
 
@@ -10,6 +17,7 @@ function inputOperator(operator: string) {
   if (displayInput) {
     sum = sum + Number(displayInput.value);
     displayInput.value = operator;
+    operatorClicked = true;
   }
 }
 
