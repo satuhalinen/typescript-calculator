@@ -1,6 +1,30 @@
 const displayInput = document.getElementById("display") as HTMLInputElement;
 let sum: number = 0;
+let minus: number = 0;
 let operatorClicked: boolean = false;
+let currentNumber: number = 0;
+let currentOperator: string = "";
+
+function inputOperator(operator: string) {
+  if (displayInput) {
+    currentNumber = Number(displayInput.value);
+    if (currentOperator) {
+      switch (currentOperator) {
+        case "+":
+          sum = sum + currentNumber;
+          break;
+        case "-":
+          sum = sum - currentNumber;
+          break;
+      }
+    } else {
+      sum = currentNumber;
+    }
+    displayInput.value = operator;
+    currentOperator = operator;
+    operatorClicked = true;
+  }
+}
 
 function inputNumber(num: string) {
   if (displayInput) {
@@ -13,28 +37,29 @@ function inputNumber(num: string) {
   }
 }
 
-function inputOperator(operator: string) {
-  if (displayInput) {
-    sum = sum + Number(displayInput.value);
-    displayInput.value = operator;
-    operatorClicked = true;
-  }
-}
-
-const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
 for (let number of numbers) {
-  const button = document.getElementById(number + 'Button') as HTMLButtonElement;
+  const button = document.getElementById(
+    number + "Button"
+  ) as HTMLButtonElement;
   if (button) {
     button.addEventListener("click", () => inputNumber(number));
   }
 }
 
 const plusButton = document.getElementById("plusButton") as HTMLButtonElement;
+const minusButton = document.getElementById("minusButton") as HTMLButtonElement;
 
 if (plusButton) {
   plusButton.addEventListener("click", () => {
     inputOperator("+");
+  });
+}
+
+if (minusButton) {
+  minusButton.addEventListener("click", () => {
+    inputOperator("-");
   });
 }
 
@@ -44,8 +69,18 @@ const resultButton = document.getElementById(
 
 function calculateResult() {
   if (displayInput) {
-    sum = sum + Number(displayInput.value);
+    currentNumber = Number(displayInput.value);
+    switch (currentOperator) {
+      case "+":
+        sum += currentNumber;
+        break;
+      case "-":
+        sum -= currentNumber;
+        break;
+    }
     displayInput.value = sum.toString();
+    currentNumber = 0;
+    currentOperator = "";
   }
 }
 
