@@ -1,7 +1,5 @@
 const displayInput = document.getElementById("display") as HTMLInputElement;
 let sum: number = 0;
-let minus: number = 0;
-let multi: number = 0;
 let operatorClicked: boolean = false;
 let currentNumber: number = 0;
 let currentOperator: string = "";
