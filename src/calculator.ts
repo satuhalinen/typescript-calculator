@@ -32,12 +32,15 @@ function inputOperator(operator: string) {
 }
 
 function inputNumber(num: string) {
-  if (displayInput) {
+  if (displayInput && resultButton) {
     if (operatorClicked) {
       displayInput.value = num;
       operatorClicked = false;
-    } else {
+    } else if (!resultButton){
       displayInput.value += num;
+    }
+    else {
+      displayInput.value = num; 
     }
   }
 }
