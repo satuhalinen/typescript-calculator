@@ -57,6 +57,7 @@ const plusButton = document.getElementById("plusButton") as HTMLButtonElement;
 const minusButton = document.getElementById("minusButton") as HTMLButtonElement;
 const multiButton = document.getElementById("multiButton") as HTMLButtonElement;
 const diviButton = document.getElementById("diviButton") as HTMLButtonElement;
+const clearButton = document.getElementById("clearButton") as HTMLButtonElement;
 
 if (plusButton) {
   plusButton.addEventListener("click", () => {
@@ -79,6 +80,16 @@ if (multiButton) {
 if (diviButton) {
   diviButton.addEventListener("click", () => {
     inputOperator("/");
+  });
+}
+
+if (clearButton) {
+  clearButton.addEventListener("click", () => {
+    operatorClicked = false;
+    currentNumber = 0;
+    currentOperator = "";
+    displayInput.value = "";
+    sum = 0;
   });
 }
 
