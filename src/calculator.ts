@@ -17,6 +17,10 @@ function inputOperator(operator: string) {
           break;
         case "*":
           sum = sum * currentNumber;
+          break;
+        case "/":
+          sum = sum / currentNumber;
+          break;
       }
     } else {
       sum = currentNumber;
@@ -52,6 +56,7 @@ for (let number of numbers) {
 const plusButton = document.getElementById("plusButton") as HTMLButtonElement;
 const minusButton = document.getElementById("minusButton") as HTMLButtonElement;
 const multiButton = document.getElementById("multiButton") as HTMLButtonElement;
+const diviButton = document.getElementById("diviButton") as HTMLButtonElement;
 
 if (plusButton) {
   plusButton.addEventListener("click", () => {
@@ -71,6 +76,12 @@ if (multiButton) {
   });
 }
 
+if (diviButton) {
+  diviButton.addEventListener("click", () => {
+    inputOperator("/");
+  });
+}
+
 const resultButton = document.getElementById(
   "resultButton"
 ) as HTMLButtonElement;
@@ -87,6 +98,9 @@ function calculateResult() {
         break;
       case "*":
         sum *= currentNumber;
+        break;
+      case "/":
+        sum /= currentNumber;
         break;
     }
     displayInput.value = sum.toString();
