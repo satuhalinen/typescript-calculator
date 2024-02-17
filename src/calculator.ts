@@ -1,155 +1,60 @@
-const displayInput = document.getElementById("display") as HTMLInputElement;
-let sum: number = 0;
-let operatorClicked: boolean = false;
-let currentNumber: number = 0;
-let currentOperator: string = "";
-
-function inputOperator(operator: string) {
-  if (displayInput) {
-    currentNumber = Number(displayInput.value);
-    if (currentOperator) {
-      switch (currentOperator) {
-        case "+":
-          sum = sum + currentNumber;
-          break;
-        case "-":
-          sum = sum - currentNumber;
-          break;
-        case "*":
-          sum = sum * currentNumber;
-          break;
-        case "/":
-          sum = sum / currentNumber;
-          break;
-      }
-    } else {
-      sum = currentNumber;
-    }
-    displayInput.value = operator;
-    currentOperator = operator;
-    operatorClicked = true;
-  }
-}
-
-function inputNumber(num: string) {
-  if (displayInput && resultButton) {
-    if (operatorClicked) {
-      displayInput.value = num;
-      operatorClicked = false;
-    } else if (!resultButton){
-      displayInput.value += num;
-    }
-    else {
-      displayInput.value = num; 
-    }
-  }
-}
-
-const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
-for (let number of numbers) {
-  const button = document.getElementById(
-    number + "Button"
-  ) as HTMLButtonElement;
-  if (button) {
-    button.addEventListener("click", () => inputNumber(number));
-  }
-}
-
-const plusButton = document.getElementById("plusButton") as HTMLButtonElement;
-const minusButton = document.getElementById("minusButton") as HTMLButtonElement;
-const multiButton = document.getElementById("multiButton") as HTMLButtonElement;
-const diviButton = document.getElementById("diviButton") as HTMLButtonElement;
-const clearButton = document.getElementById("clearButton") as HTMLButtonElement;
-
-if (plusButton) {
-  plusButton.addEventListener("click", () => {
-    inputOperator("+");
-  });
-}
-
-if (minusButton) {
-  minusButton.addEventListener("click", () => {
-    inputOperator("-");
-  });
-}
-
-if (multiButton) {
-  multiButton.addEventListener("click", () => {
-    inputOperator("*");
-  });
-}
-
-if (diviButton) {
-  diviButton.addEventListener("click", () => {
-    inputOperator("/");
-  });
-}
-
-if (clearButton) {
-  clearButton.addEventListener("click", () => {
-    operatorClicked = false;
-    currentNumber = 0;
-    currentOperator = "";
-    displayInput.value = "";
-    sum = 0;
-  });
-}
-
-const resultButton = document.getElementById(
-  "resultButton"
-) as HTMLButtonElement;
-
-function calculateResult() {
-  if (displayInput) {
-    currentNumber = Number(displayInput.value);
-    switch (currentOperator) {
-      case "+":
-        sum += currentNumber;
-        break;
-      case "-":
-        sum -= currentNumber;
-        break;
-      case "*":
-        sum *= currentNumber;
-        break;
-      case "/":
-        sum /= currentNumber;
-        break;
-    }
-    displayInput.value = sum.toString();
-    currentNumber = 0;
-    currentOperator = "";
-  }
-}
-
-if (resultButton) {
-  resultButton.addEventListener("click", () => {
-    calculateResult();
-  });
-}
-
 /**
  * The current input value as a string.
  */
-
+let currentInput: string = "";
 /**
  * The previous input value as a string.
  */
-
+let previousInput: string = "";
 /**
  * The current operation symbol (+, -, *, /) or null if none.
  */
-
+let currentOperationSymbol: string | null = null;
 /**
  * Calculates the result of the current operation and updates the current input value.
  * If the previous or current input values are not valid numbers, or the operation is null, does nothing.
  */
 
+function calculateResult() {
+  if (
+    !isNaN(Number(previousInput)) &&
+    !isNaN(Number(currentInput)) &&
+    currentOperationSymbol
+  ) {
+    if (currentOperationSymbol === "+") {
+      currentInput = String(Number(previousInput) + Number(currentInput));
+    }
+    else if (currentOperationSymbol === "-") {
+      currentInput = String(Number(previousInput) - Number(currentInput));
+    }
+    else if (currentOperationSymbol === "*") {
+      currentInput = String(Number(previousInput) * Number(currentInput));
+    }
+    else if (currentOperationSymbol === "/") {
+      currentInput = String(Number(previousInput) / Number(currentInput));
+    }
+  }
+  updateDisplayElement();
+  previousInput = "";
+}
+
+/**
+ * Updates the display element with the current input value.
+ */
+let displayElement = document.getElementById("display") as HTMLInputElement;
+function updateDisplayElement() {
+  displayElement.value = currentInput;
+}
+
 /**
  * Appends a number to the current input value and updates the display.
  * @param num - The number to append.
  */
+
+function inputNumber(num: string) {
+  currentInput = currentInput + num;
+  updateDisplayElement();
+}
 
 /**
  * Sets the current operation and moves the current input value to the previous input value.
@@ -157,12 +62,31 @@ if (resultButton) {
  * @param op - The operation symbol to set.
  */
 
+function inputOperator(op: string) {
+currentOperationSymbol = op;
+if(previousInput){
+  calculateResult();
+}
+previousInput = currentInput;
+currentInput = "";
+}
+
 /**
  * Clears the current and previous input values and the operation and updates the display.
  */
-
-/**
- * Updates the display element with the current input value.
- */
+function clearDisplay(){
+  currentInput = "";
+  previousInput = "";
+  currentOperationSymbol = null;
+  updateDisplayElement();
+}
 
 // Initialize the display with the current input value.
+displayElement.value = currentInput;
+
+window.inputOperator = inputOperator;
+window.clearDisplay = clearDisplay;
+window.calculateResult = calculateResult;
+window.inputNumber = inputNumber;
+
+
